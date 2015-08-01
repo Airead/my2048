@@ -12,6 +12,10 @@
         },
 		{
             "name": "gui"
+        },
+        {
+            "name": "puremvc",
+            "path": "src/puremvc/"
         }
     ],
     "native": {

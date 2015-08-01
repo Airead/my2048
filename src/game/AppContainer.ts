@@ -5,6 +5,7 @@
 module game {
     export class AppContainer extends egret.gui.UIStage {
         public mainMainUI: MainMenuUI;
+        public mainGameUI: MainGameUI;
         public constructor() {
             super();
             this.addEventListener(egret.gui.UIEvent.CREATION_COMPLETE, this.createCompleteEvent, this);
@@ -20,6 +21,9 @@ module game {
 
             this.mainMainUI = new MainMenuUI();
             this.addElement(this.mainMainUI);
+
+            this.mainGameUI = new MainGameUI();
+            this.addElement(this.mainGameUI);
         }
     }
 }

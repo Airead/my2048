@@ -105,10 +105,6 @@ class Main extends egret.DisplayObjectContainer {
         }
     }
 
-    private gameLayer:egret.DisplayObjectContainer;
-
-    private guiLayer:egret.gui.UIStage;
-
     /**
      * 创建场景界面
      * Create scene interface
@@ -116,6 +112,7 @@ class Main extends egret.DisplayObjectContainer {
     private createScene():void {
         var appContainer:game.AppContainer = new game.AppContainer();
         this.addChild(appContainer);
+        game.ApplicationFacade.getInstance().startUp(appContainer);
     }
 }
 

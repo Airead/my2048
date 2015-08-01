@@ -7,4 +7,5 @@
 		<e:State name="disabled"/>
 	</e:states>
 	<e:UIAsset source="menu" x="0" y="0"/>
+	<e:Button id="resetButton" x="402" y="71" skinName="skins.simple.CustomButtonSkin" label="重试"/>
 </e:Skin>
