@@ -1,18 +1,18 @@
 {
 	"groups":[
 	{
-		"keys":"number_json,source_json",
+		"keys":"number,source",
 		"name":"preload"
 	}],
 	"resources":[
 	{
-		"name":"number_json",
+		"name":"number",
 		"subkeys":"number_1,number_10,number_11,number_12,number_13,number_2,number_3,number_4,number_5,number_6,number_7,number_8,number_9",
 		"type":"sheet",
 		"url":"assets/number.json"
 	},
 	{
-		"name":"source_json",
+		"name":"source",
 		"subkeys":"background,backtile,buttonDown,buttonUp,frontground,menu,result_failed,result_sucess",
 		"type":"sheet",
 		"url":"assets/source.json"

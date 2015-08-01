@@ -20,9 +20,13 @@ module game {
             super.createChildren();
 
             this.mainMainUI = new MainMenuUI();
+            this.mainMainUI.top = 10;
+            this.mainMainUI.horizontalCenter = 0;
             this.addElement(this.mainMainUI);
 
             this.mainGameUI = new MainGameUI();
+            this.mainGameUI.top = 140;
+            this.mainGameUI.horizontalCenter = 0;
             this.addElement(this.mainGameUI);
         }
     }

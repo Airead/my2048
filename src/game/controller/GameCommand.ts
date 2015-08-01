@@ -22,6 +22,7 @@ module game.controller {
             switch (note.getName()) {
                 case GameCommand.GAME_RESET: {
                     gridProxy.reset();
+                    gridProxy.addStartTiles();
                     break;
                 }
             }

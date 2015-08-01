@@ -3,6 +3,7 @@
  */
 module game {
     export class MainMenuUI extends egret.gui.SkinnableComponent {
+        public resetButton:egret.gui.Button;
 
         public constructor() {
             super();

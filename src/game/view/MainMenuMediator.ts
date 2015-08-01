@@ -4,7 +4,7 @@ module game.view {
 
         public constructor(viewComponent:any) {
             super(MainMenuMediator.NAME, viewComponent);
-            this.mainGameUI.resetButton.addEventListener(egret.TouchEvent.TOUCH_TAP, this.startButtonClick, this);
+            this.mainMenuUI.resetButton.addEventListener(egret.TouchEvent.TOUCH_TAP, this.startButtonClick, this);
         }
 
         public startButtonClick(event:egret.TouchEvent):void {
@@ -12,8 +12,8 @@ module game.view {
             this.sendNotification(game.controller.GameCommand.GAME_RESET);
         }
 
-        public get mainGameUI():MainGameUI {
-            return <MainGameUI>this.viewComponent;
+        public get mainMenuUI():MainMenuUI {
+            return <MainMenuUI>this.viewComponent;
         }
     }
 }
