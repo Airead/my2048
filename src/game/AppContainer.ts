@@ -4,6 +4,7 @@
 
 module game {
     export class AppContainer extends egret.gui.UIStage {
+        public mainMainUI: MainMenuUI;
         public constructor() {
             super();
             this.addEventListener(egret.gui.UIEvent.CREATION_COMPLETE, this.createCompleteEvent, this);
@@ -16,6 +17,9 @@ module game {
 
         public createChildren():void {
             super.createChildren();
+
+            this.mainMainUI = new MainMenuUI();
+            this.addElement(this.mainMainUI);
         }
     }
 }
