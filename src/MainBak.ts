@@ -27,7 +27,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////
 
-class Main extends egret.DisplayObjectContainer {
+class MainBak extends egret.DisplayObjectContainer {
 
     /**
      * 加载进度界面
@@ -114,9 +114,27 @@ class Main extends egret.DisplayObjectContainer {
      * Create scene interface
      */
     private createScene():void {
-        var appContainer:game.AppContainer = new game.AppContainer();
-        this.addChild(appContainer);
+
+        //游戏场景层，游戏场景相关内容可以放在这里面。
+        //Game scene layer, the game content related to the scene can be placed inside this layer.
+        this.gameLayer = new egret.DisplayObjectContainer();
+        this.addChild(this.gameLayer);
+        var bitmap:egret.Bitmap = new egret.Bitmap();
+        bitmap.texture = RES.getRes("bgImage");
+        this.gameLayer.addChild(bitmap);
+
+        //GUI的组件必须都在这个容器内部,UIStage会始终自动保持跟舞台一样大小。
+        //GUI components must be within the container, UIStage will always remain the same as stage size automatically.
+        this.guiLayer = new egret.gui.UIStage();
+        this.addChild(this.guiLayer);
+
+        var showcase:Showcase = new Showcase();
+        //在GUI范围内一律使用addElement等方法替代addChild等方法。
+        //Within GUI scope, addChild methods should be replaced by addElement methods.
+        this.guiLayer.addElement(showcase);
     }
+
+
 }
 
 
