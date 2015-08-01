@@ -45,12 +45,19 @@ module game {
                 egret.Tween.get(this).to({scaleX: 1, scaleY: 1}, 100);
             } else {
                 var self:TileUI = this;
-                var fun:Function = function() {
-                    egret.Tween.get(self).to({scaleX:1, scaleY:1}, 80);
+                var fun:Function = function () {
+                    egret.Tween.get(self).to({scaleX: 1, scaleY: 1}, 80);
                 };
                 this.scaleX = this.scaleY = 1;
-                egret.Tween.get(this).to({scaleX:1.3, scaleY:1.3}, 80).call(fun, this);
+                egret.Tween.get(this).to({scaleX: 1.3, scaleY: 1.3}, 80).call(fun, this);
             }
+        }
+
+        public playmove(xTo:number, yTo:number):void {
+            var self:TileUI = this;
+            egret.Tween.get(this).to({x: xTo, y: yTo}, 100).call(function ():void {
+                self.dispatchEvent(new egret.Event("moveComplete"));
+            }, this);
         }
     }
 }

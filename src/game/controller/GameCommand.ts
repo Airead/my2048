@@ -1,6 +1,7 @@
 module game.controller {
     export class GameCommand extends puremvc.SimpleCommand implements puremvc.ICommand {
         public static NAME:string = "GameCommand";
+
         public constructor() {
             super();
         }
@@ -20,9 +21,15 @@ module game.controller {
             var gridProxy:game.model.GridProxy = <game.model.GridProxy>this.facade.retrieveProxy(game.model.GridProxy.NAME);
             var data:any = note.getBody();
             switch (note.getName()) {
-                case GameCommand.GAME_RESET: {
+                case GameCommand.GAME_RESET:
+                {
                     gridProxy.reset();
                     gridProxy.addStartTiles();
+                    break;
+                }
+                case GameCommand.USER_MOVE:
+                {
+                    gridProxy.move(<number>data);
                     break;
                 }
             }

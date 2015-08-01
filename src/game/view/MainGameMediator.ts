@@ -33,6 +33,13 @@ module game.view {
                     this.mainGameUI.clearTiles();
                     break;
                 }
+
+                case game.model.GridProxy.MOVE_TILE:
+                {
+                    this.mainGameUI.moveTile(<TileVO>data);
+                    break;
+                }
+
             }
         }
 

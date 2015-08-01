@@ -47,7 +47,7 @@ module game {
             tile.visible = false;
             this.tileGroup.addElement(tile);
 
-            var showTile:Function = function():void {
+            var showTile:Function = function ():void {
                 tile.visible = true;
                 if (tileVO.merged) {
                     tile.playScale(true);
@@ -103,12 +103,33 @@ module game {
             var size:number = CommonData.size;
             var tile:egret.gui.UIAsset;
             var totalNum:number = size * size;
-            for (var i:number = 0; i<totalNum; i++) {
+            for (var i:number = 0; i < totalNum; i++) {
                 tile = new egret.gui.UIAsset();
                 tile.width = tile.height = this.tileSize;
                 tile.source = "source.backtile";
                 this.backGroundGroup.addElement(tile);
             }
         }
+
+        public getTileUI(x:number, y:number):TileUI {
+            for (var i:number = 0; i<this.tileGroup.numElements; i++) {
+                var tile:TileUI = <TileUI>this.tileGroup.getElementAt(i);
+                if (tile.location.x == x && tile.location.y == y) {
+                    return tile;
+                }
+            }
+            return null;
+        }
+
+        public moveTile(tileVO:TileVO):void {
+            var tile:TileUI = this.getTileUI(tileVO.previousPosition.x, tileVO.previousPosition.y);
+            if (tile) {
+                tile.location.x = tileVO.x;
+                tile.location.y = tileVO.y;
+                tile.playmove(tileVO.x * (tile.width + this.gap) + tile.width / 2,
+                    tileVO.y * (tile.height + this.gap) + tile.height / 2)
+            }
+        }
+
     }
 }
