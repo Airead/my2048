@@ -8,6 +8,7 @@ module game.controller {
         public execute(notification:puremvc.INotification):void {
             console.log("prepare gridProxy");
             this.facade.registerProxy(new game.model.GridProxy());
+            this.facade.registerProxy(new game.model.GameProxy());
         }
     }
 }

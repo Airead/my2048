@@ -107,5 +107,127 @@ module game.model {
                 this.insertTile(tile);
             }
         }
+
+        private prepareTiles():void {
+            for (var x:number = 0; x < this.size; x++) {
+                for (var y:number = 0; y < this.size; y++) {
+                    var tile:TileVO = <TileVO>this.cells[x][y];
+                    if (tile) {
+                        tile.merged = false;
+                        tile.previousPosition = {x: tile.x, y: tile.y};
+                    }
+                }
+            }
+        }
+
+        private getVector(direction:number):any{
+            if(direction == 0){ return {"x":0 , "y":-1}; }
+            else if(direction == 1){ return {"x":1 , "y":0}; }
+            else if(direction == 2){ return {"x":0 , "y":1}; }
+            else if(direction == 3){ return {"x":-1 , "y":0}; }
+            else { return null; }
+        }
+
+        private buildMoveOrder(direction:number):Array<any> {
+            var arr:Array<any> = [];
+            var vector:any = this.getVector(direction);
+            var xReverse:boolean = (vector.x == 1);
+            var yReverse:boolean = (vector.y == 1);
+            var x:number = xReverse ? (this.size - 1) : 0;
+            while (x>=0 && x < this.size) {
+                var y:number = yReverse ? (this.size - 1) : 0;
+                while (y>=0 && y < this.size) {
+                    arr.push(this.cellContent(x, y));
+                    y = y + (yReverse ? -1 : 1);
+                }
+                x = x + (xReverse ? -1 : 1);
+            }
+            return arr;
+        }
+
+        private getNextPosition(position:any, direction:number):any {
+            var vector:any = this.getVector(direction);
+            return {x: position.x + vector.x, y: position.y + vector.y};
+        }
+
+        private findFarthestPosition(position:any, direction:number):any {
+            var vector:any = this.getVector(direction);
+            var lastPosition:any;
+            do {
+                lastPosition = position;
+                position = this.getNextPosition(position, direction);
+            } while (this.withinBounds(position.x, position.y) && this.isAvailable(position.x, position.y));
+            return lastPosition;
+        }
+
+        private mergedTile(tileFrom:TileVO, tileTo:TileVO):void {
+            var mergedTile:TileVO = new TileVO();
+            mergedTile.x = tileTo.x;
+            mergedTile.y = tileTo.y;
+            mergedTile.previousPosition = {x:tileFrom.x, y:tileFrom.y};
+            mergedTile.value = tileFrom.value + tileTo.value;
+            mergedTile.merged = true;
+
+            this.cells[tileFrom.x][tileFrom.y] = null;
+            this.cells[tileTo.x][tileTo.y] = mergedTile;
+
+            this.sendNotification(GridProxy.MERGED_TILE, mergedTile.clone());
+        }
+
+        private moveTile(tile:TileVO, x:number, y:number):void {
+            if (tile.x == x && tile.y == y) {
+                return;
+            }
+
+            this.cells[tile.x][tile.y] = null;
+            tile.x = x;
+            tile.y = y;
+            this.cells[tile.x][tile.y] = tile;
+            this.sendNotification(GridProxy.MOVE_TILE, tile.clone());
+        }
+
+        public move(direction:number):void {
+            var won:boolean = false;
+            var moved:boolean = false;
+            var score:number = 0;
+
+            this.prepareTiles();
+            var tiles:Array<any> = this.buildMoveOrder(direction);
+            for (var i:number = 0; i < tiles.length; i++) {
+                var tile:TileVO = <TileVO>tiles[i];
+                if (tile) {
+                    var farthestPosition:any = this.findFarthestPosition({x: tile.x, y:tile.y}, direction);
+                    var nextPosition:any = this.getNextPosition(farthestPosition, direction);
+                    var nextTile:TileVO = this.cellContent(nextPosition.x, nextPosition.y);
+                    if (nextTile && nextTile.value == tile.value && !nextTile.merged) {
+                        var newValue:number = tile.value + nextTile.value;
+
+                        this.mergedTile(tile, nextTile);
+
+                        tile.x = nextTile.x;
+                        tile.y = nextTile.y;
+
+                        score += newValue;
+
+                        if (newValue == game.CommonData.winValue) {
+                            won = true;
+                        }
+                    } else {
+                        this.moveTile(tile, farthestPosition.x, farthestPosition.y);
+                    }
+
+                    if (tile.x != tile.previousPosition.x || tile.y != tile.previousPosition.y) {
+                        this.playerTurn = false;
+                        moved = true;
+                    }
+                }
+            }
+            this.sendNotification(game.controller.GameCommand.USER_MOVED, {won:won, moved:moved, score:score});
+        }
+
+        public computerMove():void {
+            this.addRandomTile();
+            this.playerTurn = true;
+        }
     }
 }

@@ -34,6 +34,12 @@ module game.view {
                     break;
                 }
 
+                case game.model.GridProxy.MERGED_TILE:
+                {
+                    this.mainGameUI.mergedTile(<TileVO>data);
+                    break;
+                }
+
                 case game.model.GridProxy.MOVE_TILE:
                 {
                     this.mainGameUI.moveTile(<TileVO>data);

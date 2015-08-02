@@ -112,7 +112,7 @@ module game {
         }
 
         public getTileUI(x:number, y:number):TileUI {
-            for (var i:number = 0; i<this.tileGroup.numElements; i++) {
+            for (var i:number = 0; i < this.tileGroup.numElements; i++) {
                 var tile:TileUI = <TileUI>this.tileGroup.getElementAt(i);
                 if (tile.location.x == x && tile.location.y == y) {
                     return tile;
@@ -128,6 +128,28 @@ module game {
                 tile.location.y = tileVO.y;
                 tile.playmove(tileVO.x * (tile.width + this.gap) + tile.width / 2,
                     tileVO.y * (tile.height + this.gap) + tile.height / 2)
+            }
+        }
+
+        public mergedTile(tileVO:TileVO):void {
+            var tileFrom:TileUI = this.getTileUI(tileVO.previousPosition.x, tileVO.previousPosition.y);
+            var tileTo:TileUI = this.getTileUI(tileVO.x, tileVO.y);
+            if (tileFrom && tileTo) {
+                this.tileGroup.setElementIndex(tileFrom, 0);
+                var self:MainGameUI = this;
+                tileFrom.location.x = -1;
+                tileFrom.location.y = -1;
+                tileFrom.playmove(tileVO.x * (tileFrom.width + this.gap) + tileFrom.width / 2, tileVO.y * (tileFrom.height + this.gap) + tileFrom.height / 2);
+                var moveComplete:Function = function (event:egret.Event):void {
+                    tileFrom.removeEventListener("moveComplete", moveComplete, self);
+                    if (tileFrom.parent) {
+                        self.tileGroup.removeElement(tileFrom);
+                    }
+                    ObjectPool.getPool("game.TileUI").returnObject(tileFrom);
+                    tileTo.value = tileVO.value;
+                    tileTo.playScale(true);
+                };
+                tileFrom.addEventListener("moveComplete", moveComplete, this);
             }
         }
 

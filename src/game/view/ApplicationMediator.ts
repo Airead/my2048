@@ -12,6 +12,7 @@ module game.view {
             {
                 var self = this;
                 document.addEventListener("keydown",function(event:KeyboardEvent){
+                    console.log("KeyboardEvent ", event.keyCode);
                     switch (event.keyCode) {
                         case 38:
                             self.doMove(0);

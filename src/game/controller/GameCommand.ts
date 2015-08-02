@@ -18,11 +18,13 @@ module game.controller {
 
         public execute(note:puremvc.INotification):void {
             console.log("GameCommand run ", note.getName());
+            var gameProxy:game.model.GameProxy = <game.model.GameProxy>this.facade.retrieveProxy(game.model.GameProxy.NAME);
             var gridProxy:game.model.GridProxy = <game.model.GridProxy>this.facade.retrieveProxy(game.model.GridProxy.NAME);
             var data:any = note.getBody();
             switch (note.getName()) {
                 case GameCommand.GAME_RESET:
                 {
+                    gameProxy.reset();
                     gridProxy.reset();
                     gridProxy.addStartTiles();
                     break;
@@ -30,6 +32,17 @@ module game.controller {
                 case GameCommand.USER_MOVE:
                 {
                     gridProxy.move(<number>data);
+                    break;
+                }
+                case GameCommand.USER_MOVED:
+                {
+                    if (!data.won) {
+                        if (data.moved) {
+                            gridProxy.computerMove();
+                        }
+                    } else {
+                        //gameProxy.setResult(true);
+                    }
                     break;
                 }
             }
