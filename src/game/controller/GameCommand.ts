@@ -36,12 +36,17 @@ module game.controller {
                 }
                 case GameCommand.USER_MOVED:
                 {
+                    gameProxy.updateScore(data.score);
                     if (!data.won) {
                         if (data.moved) {
                             gridProxy.computerMove();
                         }
                     } else {
-                        //gameProxy.setResult(true);
+                        gameProxy.setResult(true);
+                    }
+
+                    if (!gridProxy.movesAvailable()) {
+                        gameProxy.setResult(false);
                     }
                     break;
                 }

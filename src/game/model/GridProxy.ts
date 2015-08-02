@@ -229,5 +229,24 @@ module game.model {
             this.addRandomTile();
             this.playerTurn = true;
         }
+
+        public movesAvailable():boolean{
+            for (var i:number = 0; i < this.size; i++) {
+                for (var j:number = 0; j < this.size; j++) {
+                    var tile:TileVO = <TileVO><any> (this.cells[i][j]);
+                    if (tile) {
+                        for (var direction:number = 0; direction < 4; direction++) {
+                            var nextPosition:any = this.getNextPosition({"x":tile.x , "y":tile.y} , direction);
+                            var nextTileVO:TileVO = this.cellContent(nextPosition.x , nextPosition.y);
+                            if( (!nextTileVO && this.withinBounds(nextPosition.x,nextPosition.y)) ||    //某一位置是空的
+                                (nextTileVO && nextTileVO.value == tile.value) ){     //某一位置可以合并
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

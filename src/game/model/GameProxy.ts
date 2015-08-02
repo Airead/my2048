@@ -35,5 +35,25 @@ module game.model {
             game.CommonData.isRunning = true;
             this.sendNotification(GameProxy.RESET_SCORE);
         }
+
+        public updateScore(addScore:number):void {
+            if (addScore != 0) {
+                this._score += addScore;
+                if (this._score > this._highScore) {
+                    this._highScore = this._score;
+                }
+                this.sendNotification(GameProxy.UPDATE_SCORE, {totalScore:this._score, highScore:this.highScore, addScore: addScore});
+            }
+        }
+
+        public setResult(b:boolean):void {
+            if (b) {
+                this.won = true;
+            } else {
+                this.over = true;
+            }
+            game.CommonData.isRunning = false;
+            this.sendNotification(model.GameProxy.GAME_RESULT, b);
+        }
     }
 }

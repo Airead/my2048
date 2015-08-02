@@ -8,4 +8,8 @@
 	</e:states>
 	<e:UIAsset source="menu" x="0" y="0"/>
 	<e:Button id="resetButton" x="402" y="71" skinName="skins.simple.CustomButtonSkin" label="重试"/>
+	<e:Label id="scoreLabel" text="0" horizontalCenter="101.5" top="30.5"/>
+	<e:Label id="addLabel" horizontalCenter="101.5" x="10" y="30.5" text="+2" size="16" textColor="0x776E65"/>
+	<e:Label id="highScoreLabel" top="30.5" text="0" horizontalCenter="202.5"/>
+	<e:Label text="范" x="226" y="18" textColor="0xA64040"/>
 </e:Skin>

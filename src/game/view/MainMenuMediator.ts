@@ -12,6 +12,25 @@ module game.view {
             this.sendNotification(game.controller.GameCommand.GAME_RESET);
         }
 
+        public listNotificationInterests():string[] {
+            return [
+                game.model.GameProxy.UPDATE_SCORE,
+                game.model.GameProxy.RESET_SCORE,
+            ];
+        }
+
+        public handleNotification(notification:puremvc.INotification):void {
+            var data:any = notification.getBody();
+            switch(notification.getName()) {
+                case game.model.GameProxy.UPDATE_SCORE: {
+                    this.mainMenuUI.scoreLabel.text = data.totalScore.toString();
+                    this.mainMenuUI.highScoreLabel.text = data.highScore.toString();
+                    this.mainMenuUI.playScoreEffect(data.addScore);
+                    break;
+                }
+            }
+        }
+
         public get mainMenuUI():MainMenuUI {
             return <MainMenuUI>this.viewComponent;
         }
